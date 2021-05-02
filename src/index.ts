@@ -7,35 +7,59 @@ export interface Icontet {
   nodeModulesPath: string[];
   nodeModulesLang: number;
   filePath: string;
+  filesDelted: number;
+  DirsDeleted: number;
+  node_modulesDeleted: number;
 }
 
 const content = {
   nodeModulesLang: 0,
-  nodeModulesPath: []
+  filesDelted: 0,
+  DirsDeleted: 0,
+  node_modulesDeleted: 0,
+  nodeModulesPath: [],
 } as Icontet;
 
-async function start() {http://kelwin.vercel.app/
+async function start() {
   await input.start(content);
 
-  console.group()
+  console.group();
   console.log("> Lendo Estrutura de dados em:", content.filePath);
 
   content.fileStructure = await readFile(content.filePath, content);
-  console.groupEnd()
+  console.groupEnd();
 
-  if(content.nodeModulesLang <= 0){
-    console.log("> Todos os node_modules do arquivo ",content.filePath)
+  if (content.nodeModulesLang <= 0) {
+    console.log("> Todos os node_modules do arquivo ", content.filePath);
   }
 
-  console.log("----------------------------------------------------------------")
+  console.log(
+    "----------------------------------------------------------------"
+  );
 
-  console.log(`> Foram encontrados ${content.nodeModulesLang} em ${content.filePath}`);
+  console.log(
+    `> Foram encontrados ${content.nodeModulesLang} em ${content.filePath}`
+  );
 
-  console.log("----------------------------------------------------------------")
+  console.log(
+    "----------------------------------------------------------------"
+  );
 
-  if(await input.deletionConfirmationInput(content)){
-    await deleteFiles(content.nodeModulesPath)
+  if (await input.deletionConfirmationInput(content)) {
+    await deleteFiles(content);
   }
+
+  console.log(
+    "\u001b[34m  =~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~\u001b[0m"
+  );
+  console.log(`> Foram deletados ${content.DirsDeleted} pastas no total `);
+  console.log(`> Foram deletados ${content.filesDelted} arquivos no total `);
+  console.log(
+    `> Foram deletados ${content.node_modulesDeleted} node_modules no total `
+  );
+  console.log(
+    "\u001b[34m  =~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~\u001b[0m"
+  );
 }
 
 start();

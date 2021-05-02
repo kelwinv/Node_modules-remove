@@ -1,11 +1,17 @@
 import fs from "fs";
+import { Icontet } from "..";
 
-async function robot(dirPaths: string[]) {
+async function robot(content: Icontet) {
   console.group();
   console.log("\u001b[31m > deletando todos os arquivos....");
 
-  dirPaths.forEach(async (file) => {
-    verifyFilesAndDirsAndDelete(file);
+  content.nodeModulesPath.forEach(async (file) => {
+    try {
+      verifyFilesAndDirsAndDelete(file);
+      content.node_modulesDeleted += 1;
+    } catch (error) {
+      throw error;
+    }
   });
 
   console.groupEnd();
@@ -38,6 +44,8 @@ async function robot(dirPaths: string[]) {
       console.log(
         `\u001b[31m > Pasta${dirPath} foi deletada com sucesso.. \u001B[0m`
       );
+
+      content.filesDelted += 1;
     } catch (error) {
       throw error;
     }
@@ -49,6 +57,7 @@ async function robot(dirPaths: string[]) {
       console.log(
         `\u001b[31m > Aquivo ${dirPath} foi deletado com sucesso.. \u001B[0m`
       );
+      content.DirsDeleted += 1;
     } catch (error) {
       throw error;
     }
