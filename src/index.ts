@@ -1,6 +1,7 @@
 import input from "./robots/input";
 import readFile from "./robots/readFile";
 import deleteFiles from "./robots/deleteFiles";
+import confirmFiles from "./robots/confirmFiles";
 
 export interface Icontet {
   fileStructure: {};
@@ -21,7 +22,7 @@ const content = {
 } as Icontet;
 
 async function start() {
-  await input.start(content);
+  await input(content);
 
   console.group();
   console.log("> Lendo Estrutura de dados em:", content.filePath);
@@ -30,7 +31,8 @@ async function start() {
   console.groupEnd();
 
   if (content.nodeModulesLang <= 0) {
-    console.log("> Todos os node_modules do arquivo ", content.filePath);
+    console.log("> Não existe arquivos node modules em: ", content.filePath);
+    return
   }
 
   console.log(
@@ -45,7 +47,7 @@ async function start() {
     "----------------------------------------------------------------"
   );
 
-  if (await input.deletionConfirmationInput(content)) {
+  if (await confirmFiles(content)) {
     await deleteFiles(content);
   }
 

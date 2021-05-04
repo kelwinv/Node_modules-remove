@@ -31,6 +31,8 @@ async function robot(content: Icontet) {
         } else {
           verifyFilesAndDirsAndDelete(dirPath);
         }
+      } else {
+        undefinedFile(dirPath);
       }
     });
     if (fs.readdirSync(dir).length <= 0) {
@@ -42,12 +44,12 @@ async function robot(content: Icontet) {
     try {
       fs.rmdirSync(dirPath);
       console.log(
-        `\u001b[31m > Pasta${dirPath} foi deletada com sucesso.. \u001B[0m`
+        `\u001b[31m > Pasta ${dirPath} foi deletada com sucesso.. \u001B[0m`
       );
 
       content.filesDelted += 1;
     } catch (error) {
-      throw error;
+      console.warn(error);
     }
   }
 
@@ -59,8 +61,16 @@ async function robot(content: Icontet) {
       );
       content.DirsDeleted += 1;
     } catch (error) {
-      throw error;
+      console.warn(error);
     }
+  }
+
+  function undefinedFile(dirPath: string) {
+    console.log(
+      `\u001b[31m > Aquivo desconhecido ${dirPath} foi deletado com sucesso.. \u001B[0m`
+    );
+    content.filesDelted += 1;
+    fs.rmSync(dirPath, { force: true });
   }
 }
 
